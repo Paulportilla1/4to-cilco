@@ -14,7 +14,7 @@
                 <button class="nav-button">Pacientes</button>
                 <button class="nav-button">Ingresos</button>
                 <button class="nav-button">Medicos</button>
-                <button class="nav-button">Salir</button>
+                <button class="nav-button" id="salir-button">Salir</button>
                 <button class="nav-button user-button">Registro Usuario</button>
             </nav>
         </div>
@@ -76,4 +76,10 @@
         </form>
     </main>
 </body>
+<script>
+    document.getElementById('salir-button').addEventListener('click', function() {
+        window.location.href = 'index.html';
+    });
+</script>
+
 </html>
