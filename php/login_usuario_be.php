@@ -13,6 +13,7 @@ if (mysqli_num_rows($validar_email) > 0) {
     $validar_login = mysqli_query($conexion, "SELECT * FROM `usuarios` WHERE email='$email' AND password='$password'");
 
     if (mysqli_num_rows($validar_login) > 0) {
+        // Inicio de sesión exitoso
         header("Location: ../ficha.php");
         exit;
     } else {

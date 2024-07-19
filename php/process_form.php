@@ -1,46 +1,45 @@
 <?php
-include 'db.php';
+// Configuración de la base de datos
+$servername = "localhost"; // Cambia si es necesario
+$username = "root";
+$password = "";
+$dbname = "bionat";
 
-// Verificar que la conexión se haya establecido correctamente
+// Crear conexión
+$conn = mysqli_connect("localhost", "root", "", "bionat");
+
+// Verificar la conexión
 if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+    die("La conexión falló: " . $conn->connect_error);
 }
 
-// Obtener y limpiar los datos del formulario
-$nombre = $conn->real_escape_string($_POST['nombre']);
-$fecha_nacimiento = $conn->real_escape_string($_POST['fecha-nacimiento']);
-$domicilio = $conn->real_escape_string($_POST['domicilio']);
-$cedula = $conn->real_escape_string($_POST['cedula']);
-$telefono = $conn->real_escape_string($_POST['telefono']);
-$genero = $conn->real_escape_string($_POST['genero']);
-$medico = $conn->real_escape_string($_POST['medico']);
-$presion = $conn->real_escape_string($_POST['presion']);
-$peso = $conn->real_escape_string($_POST['peso']);
-$grupo_sanguineo = $conn->real_escape_string($_POST['grupo-sanguineo']);
-$talla = $conn->real_escape_string($_POST['talla']);
-$enfermedad_cronica = $conn->real_escape_string($_POST['enfermedad-cronica']);
-$alergico = $conn->real_escape_string($_POST['alergico']);
-
-// Preparar la consulta SQL
-$sql = "INSERT INTO pacientes (nombre, fecha_nacimiento, domicilio, cedula, telefono, genero, medico, presion, peso, grupo_sanguineo, talla, enfermedad_cronica, alergico) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-$stmt = $conn->prepare($sql);
-
-if ($stmt === false) {
-    die("Error en la preparación de la consulta: " . $conn->error);
-}
-
-// Vincular parámetros y ejecutar
+// Preparar y vincular
+$stmt = $conn->prepare("INSERT INTO ingresos (nombre, fecha_nacimiento, domicilio, cedula, telefono, genero, medico, presion, peso, grupo_sanguineo, talla, enfermedad_cronica, alergico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("sssssssssssss", $nombre, $fecha_nacimiento, $domicilio, $cedula, $telefono, $genero, $medico, $presion, $peso, $grupo_sanguineo, $talla, $enfermedad_cronica, $alergico);
 
+// Obtener valores del formulario
+$nombre = $_POST['nombre'];
+$fecha_nacimiento = $_POST['fecha-nacimiento'];
+$domicilio = $_POST['domicilio'];
+$cedula = $_POST['cedula'];
+$telefono = $_POST['telefono'];
+$genero = $_POST['genero'];
+$medico = $_POST['medico'];
+$presion = $_POST['presion'];
+$peso = $_POST['peso'];
+$grupo_sanguineo = $_POST['grupo-sanguineo'];
+$talla = $_POST['talla'];
+$enfermedad_cronica = $_POST['enfermedad-cronica'];
+$alergico = $_POST['alergico'];
+
+// Ejecutar la consulta
 if ($stmt->execute()) {
-    echo "Nuevo registro creado exitosamente";
+    echo "Registro exitoso";
 } else {
     echo "Error: " . $stmt->error;
 }
 
-// Cerrar la declaración y la conexión
+// Cerrar la conexión
 $stmt->close();
 $conn->close();
 ?>
